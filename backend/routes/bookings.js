@@ -1,9 +1,17 @@
 const express = require("express");
 const router = express.Router();
-
+const nodemailer = require('nodemailer');
 const User = require("../models/user");
 const Ambulance = require("../models/ambulance");
 const Booking = require("../models/bookings");
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'ksushant6566@gmail.com',
+    pass: 'Sushant@6566'
+  }
+});
 
 router.get("/", (req, res) => {
   Booking.find()
@@ -41,24 +49,45 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
-router.post("/createBooking", (req, res) => {
+router.post("/createBooking", async (req, res) => {
   try {
-    const booking = new Booking(req.body);
-    booking.save().then((booking) => {
-      Ambulance.updateOne(
-        { _id: req.body.ambulance },
-        { $set: { available: false } }
-      ).then(() => {
-        booking.populate("ambulance", function (err) {
-          console.log(err);
-          console.log(booking);
-          const response = {
-            booking: booking,
-          };
 
-          res.status(200).json(response);
-        });
+    const ambulance = await Ambulance.findOne({ _id: req.body.ambulance});
+    const user = await User.findOne({ _id: req.body.user});
+
+    const booking = new Booking({
+      ...req.body,
+      user: user,
+      ambulance: ambulance
+    });
+    
+    booking.save()
+    .then(async (booking) => {
+      await Ambulance.updateOne({ _id: req.body.ambulance },{ $set: { available: false } } );
+      console.log(booking);
+      const response = {
+        booking: booking,
+      };
+    
+      const mailOptions = {
+        from: 'ksushant6566@gmail.com',
+        to: `${ambulance.email}`,
+        subject: 'URGENT: New Booking Request',
+        text: `Dear ${ambulance.name}\n${user.firstName} has requested an ambulance please report.\n Check your dashboard for more details`
+      };
+          
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res.setHeader("Access-Control-Allow-Origin", "*") 
+          res.json("unsuccessfull")
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.json("successfull")
+        }
       });
+
+      res.status(200).json(response);
     });
   } catch (error) {
     console.error(err.message);

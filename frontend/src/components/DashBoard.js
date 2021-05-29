@@ -30,7 +30,6 @@ mapboxgl.workerClass =
 const useStyles = makeStyles({
   root: {
     marginTop: "75px",
-    border: "1px solid red"
   },
   navStyle: {
     position: "absolute",
