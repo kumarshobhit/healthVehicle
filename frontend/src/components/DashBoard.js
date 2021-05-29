@@ -29,9 +29,8 @@ mapboxgl.workerClass =
 
 const useStyles = makeStyles({
   root: {
-    height: "100vh",
     marginTop: "75px",
-    // marginBottom    : "75px",
+    border: "1px solid red"
   },
   navStyle: {
     position: "absolute",
@@ -139,10 +138,10 @@ function DashBoard() {
       )}
 
       <div
-        style={{ width: "100vw", height: " 100vh" }}
+        style={{ width: "100%", height: "600px" }}
         ref={mapRef}
         className="mapWrapper"
-      />
+      ></div>
     </div>
   );
 }
