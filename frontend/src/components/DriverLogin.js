@@ -3,18 +3,12 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch } from "react-redux";
-import { login } from "../features/authentication/auth";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import { login } from "../features/authentication/driverAuth";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 
@@ -22,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "120px",
     backgroundColor: "white",
+    marginBottom: "150px",
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -50,28 +45,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LogIn() {
+export default function DriverLogin() {
   const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState(null);
   const [formState, setFormState] = useState({
-    email: "",
+    numberplate: "",
     password: "",
-    usertype: "",
   });
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formState);
     const res = await dispatch(login(formState));
-    if (res.type === "auth/login/fulfilled") {
+    if (res.type === "driverAuth/login/fulfilled") {
       console.log(res.payload);
       setFormState({
-        email: "",
+        numberplate: "",
         password: "",
-        usertype: "",
       });
       history.push("/");
     } else {
@@ -98,12 +92,11 @@ export default function LogIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            value={formState.email}
+            id="numberplate"
+            label="Number Plate"
+            name="numberplate"
+            value={formState.numberplate}
             onChange={handleChange}
-            autoComplete="email"
             autoFocus
           />
           <TextField
@@ -119,25 +112,7 @@ export default function LogIn() {
             onChange={handleChange}
             autoComplete="current-password"
           />
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel htmlFor="outlined-age-native-simple">
-              Select Account Type
-            </InputLabel>
-            <Select
-              native
-              value={formState.usertype}
-              onChange={handleChange}
-              label="usertype"
-              inputProps={{
-                name: "usertype",
-                id: "outlined-age-native-simple",
-              }}
-            >
-              <option aria-label="None" value="" />
-              <option value={"Admin"}>Admin</option>
-              <option value={"Customer"}>Customer</option>
-            </Select>
-          </FormControl>
+
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -153,15 +128,6 @@ export default function LogIn() {
           >
             Log In
           </Button>
-
-          <Grid container className={classes.subLink}>
-            <Link href="/signup" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
-            <Link href="/driverlogin" variant="body2">
-              {"Login as a Driver"}
-            </Link>
-          </Grid>
         </form>
       </div>
     </Container>

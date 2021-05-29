@@ -80,7 +80,7 @@ export default function DriverSignup() {
     const res = await dispatch(signup(formState));
     console.log(res);
 
-    if (res.type === "auth/signup/rejected") {
+    if (res.type === "driverAuth/signup/rejected") {
       setErrorMessage(res.payload);
       console.log(res.payload);
     } else {

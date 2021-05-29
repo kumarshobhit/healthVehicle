@@ -11,6 +11,7 @@ const initialState = {
   available: false,
   password: "",
   id: null,
+  usertype: "",
 };
 
 const loginURL = "http://localhost:8000/api/ambulances/login";
@@ -43,12 +44,11 @@ export const signup = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "driverAuth/login",
-  async ({ email, password, usertype }, { rejectWithValue }) => {
+  async ({ numberplate, password }, { rejectWithValue }) => {
     try {
       const res = await axios.post(loginURL, {
-        email,
+        numberplate,
         password,
-        usertype,
       });
       console.log(res.data.response);
       localStorage.setItem("token", res.data.response.ambulance.token);
@@ -75,44 +75,54 @@ export const driverAuthSlice = createSlice({
         available: false,
         password: "",
         id: null,
+        usertype: "",
       });
     },
   },
   extraReducers: {
-    // [login.pending]: (state, action) => {
-    //   Object.assign(state, {
-    //     loading: true,
-    //     error: null,
-    //     isLoggedIn: false,
-    //     firstName: "",
-    //     lastName: "",
-    //     email: "",
-    //     usertype: "",
-    //   });
-    // },
-    // [login.fulfilled]: (state, action) => {
-    //   console.log(action.payload);
-    //   Object.assign(state, {
-    //     loading: false,
-    //     error: null,
-    //     isLoggedIn: true,
-    //     firstName: action.payload.user.firstname,
-    //     lastName: action.payload.user.lastname,
-    //     email: action.payload.user.email,
-    //     usertype: action.payload.user.usertype,
-    //   });
-    // },
-    // [login.rejected]: (state, action) => {
-    //   Object.assign(state, {
-    //     loading: false,
-    //     error: action.payload,
-    //     isLoggedIn: false,
-    //     firstName: "",
-    //     lastName: "",
-    //     email: "",
-    //     usertype: "",
-    //   });
-    // },
+    [login.pending]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        numberplate: "",
+        driversName: "",
+        contact: null,
+        address: "",
+        available: false,
+        password: "",
+        id: null,
+        usertype: "",
+      });
+    },
+    [login.fulfilled]: (state, action) => {
+      const ambulance = action.payload.ambulance;
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        numberplate: ambulance.numberplate,
+        driversName: ambulance.driversName,
+        contact: ambulance.contact,
+        address: ambulance.address,
+        available: ambulance.available,
+        password: ambulance.password,
+        id: ambulance._id,
+        usertype: "driver",
+      });
+    },
+    [login.rejected]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        numberplate: "",
+        driversName: "",
+        contact: null,
+        address: "",
+        available: false,
+        password: "",
+        id: null,
+        usertype: "",
+      });
+    },
     [signup.pending]: (state, action) => {
       Object.assign(state, {
         loading: true,
@@ -124,6 +134,7 @@ export const driverAuthSlice = createSlice({
         available: false,
         password: "",
         id: null,
+        usertype: "",
       });
     },
     [signup.fulfilled]: (state, action) => {
@@ -138,6 +149,7 @@ export const driverAuthSlice = createSlice({
         available: ambulance.available,
         password: ambulance.password,
         id: ambulance._id,
+        usertype: "driver",
       });
     },
     [signup.rejected]: (state, action) => {
@@ -152,6 +164,7 @@ export const driverAuthSlice = createSlice({
         available: false,
         password: "",
         id: null,
+        usertype: "",
       });
     },
   },
