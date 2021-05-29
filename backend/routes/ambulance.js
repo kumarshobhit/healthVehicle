@@ -116,5 +116,57 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+
+  const { numberplate, password } = req.body;
+  try {
+    let ambulance = await Ambulance.findOne({ numberplate });
+
+    if (!ambulance) {
+      return res.status(400).json({ msg: "Invalid Credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, ambulance.password);
+
+    if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials" });
+
+    const payload = {
+      user: {
+        id: ambulance.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      {
+        expiresIn: 360000,
+      },
+      (err, token) => {
+        if (err) throw err;
+        const response = {
+          message: `Logged in ambulance of id '${ambulance.id}' successfully`,
+          ambulance: {
+            _id: user.id,
+            _id: ambulance.id,
+            driversName: ambulance.driversName,
+            numberplate: ambulance.numberplate,
+            contact: ambulance.contact,
+            address: ambulance.address,
+            coordinates: ambulance.coordinates,
+            available: ambulance.available,
+            token,
+          },
+        };
+        return res.status(200).json({ response });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+}
+);
+
 //jwt authorize
 module.exports = router;
