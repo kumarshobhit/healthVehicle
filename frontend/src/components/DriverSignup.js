@@ -14,10 +14,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { signup } from "../features/authentication/auth";
+import { signup } from "../features/authentication/driverAuth";
 import { Alert } from "@material-ui/lab";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DriverSignup() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [errorMessage, setErrorMessage] = useState(null);
   const [formState, setFormState] = useState({
     numberplate: "",
@@ -75,24 +77,24 @@ export default function DriverSignup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formState);
-    // const res = await dispatch(signup(formState));
-    // console.log(res);
+    const res = await dispatch(signup(formState));
+    console.log(res);
 
-    // if (res.type === "auth/signup/rejected") {
-    //   setErrorMessage(res.payload);
-    //   console.log(res.payload);
-    // } else {
-    //   console.log(res.payload);
-    //   setErrorMessage(null);
-    //   setFormState({
-    //     numberplate: "",
-    // driversName: "",
-    // contact: null,
-    // address: "",
-    // available: false,
-    // password: "",
-    //   });
-    // }
+    if (res.type === "auth/signup/rejected") {
+      setErrorMessage(res.payload);
+      console.log(res.payload);
+    } else {
+      setErrorMessage(null);
+      setFormState({
+        numberplate: "",
+        driversName: "",
+        contact: null,
+        address: "",
+        available: false,
+        password: "",
+      });
+      history.push("/");
+    }
   };
   return (
     <Container component="main" maxWidth="xs" className={classes.root}>
@@ -193,8 +195,8 @@ export default function DriverSignup() {
                 }}
               >
                 <option aria-label="None" value="" />
-                <option value={"Yes"}>Yes</option>
-                <option value={"No"}>No</option>
+                <option value={"true"}>Yes</option>
+                <option value={"false"}>No</option>
               </Select>
             </FormControl>
           </Grid>
