@@ -62,7 +62,6 @@ router.get("/:id", (req, res, next) => {
 
 router.post("/register", async (req, res) => {
   const { numberplate, password } = req.body;
-  console.log("req", req);
   try {
     let ambulance = await Ambulance.findOne({ numberplate });
 
@@ -79,7 +78,7 @@ router.post("/register", async (req, res) => {
     ambulance.password = await bcrypt.hash(password, salt);
 
     await ambulance.save();
-
+    const avail = ambulance.available === "true";
     const payload = {
       ambulance: {
         id: ambulance.id,
@@ -88,7 +87,7 @@ router.post("/register", async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get("jwtSecret"),
+      "secret",
       {
         expiresIn: 360000,
       },
@@ -103,7 +102,7 @@ router.post("/register", async (req, res) => {
             contact: ambulance.contact,
             address: ambulance.address,
             coordinates: ambulance.coordinates,
-            available: ambulance.available,
+            available: avail,
             token,
           },
         };
@@ -125,8 +124,6 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
-    const avail = ambulance.available === "true";
-
     const isMatch = await bcrypt.compare(password, ambulance.password);
 
     if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials" });
@@ -139,26 +136,27 @@ router.post("/login", async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get("jwtSecret"),
+      "secret",
       {
         expiresIn: 360000,
       },
       (err, token) => {
         if (err) throw err;
+        console.log(ambulance);
         const response = {
-          message: `Logged in ambulance of id '${ambulance.id}' successfully`,
+          message: `Logged in ambulance of id '${ambulance._id}' successfully`,
           ambulance: {
-            _id: user.id,
-            _id: ambulance.id,
+            _id: ambulance._id,
             driversName: ambulance.driversName,
             numberplate: ambulance.numberplate,
             contact: ambulance.contact,
             address: ambulance.address,
             coordinates: ambulance.coordinates,
-            available: avail,
+            available: ambulance.available,
             token,
           },
         };
+        console.log(response);
         return res.status(200).json({ response });
       }
     );

@@ -11,6 +11,7 @@ import MyProfile from "./components/MyProfile";
 import DashBoard from "./components/DashBoard";
 import MyBookingPage from "./components/BookingPage";
 import DriverSignup from "./components/DriverSignup";
+import DriverLogin from "./components/DriverLogin";
 
 function App() {
   const isUserStaff = false;
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={Login} />
           <Route path="/driversignup" component={DriverSignup} />
+          <Route path="/driverlogin" component={DriverLogin} />
           {/* <Route path="/locations/:id" component={LocationShowPage} /> */}
           <Route path="/locations" component={SearchableMap} />
           {!isUserStaff && (
