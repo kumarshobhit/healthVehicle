@@ -62,7 +62,7 @@ router.get("/:id", (req, res, next) => {
 
 router.post("/register", async (req, res) => {
   const { numberplate, password } = req.body;
-
+  console.log("req", req);
   try {
     let ambulance = await Ambulance.findOne({ numberplate });
 
@@ -117,7 +117,6 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-
   const { numberplate, password } = req.body;
   try {
     let ambulance = await Ambulance.findOne({ numberplate });
@@ -125,6 +124,8 @@ router.post("/login", async (req, res) => {
     if (!ambulance) {
       return res.status(400).json({ msg: "Invalid Credentials" });
     }
+
+    const avail = ambulance.available === "true";
 
     const isMatch = await bcrypt.compare(password, ambulance.password);
 
@@ -154,7 +155,7 @@ router.post("/login", async (req, res) => {
             contact: ambulance.contact,
             address: ambulance.address,
             coordinates: ambulance.coordinates,
-            available: ambulance.available,
+            available: avail,
             token,
           },
         };
@@ -165,8 +166,7 @@ router.post("/login", async (req, res) => {
     console.error(err.message);
     res.status(500).send("Server error");
   }
-}
-);
+});
 
 //jwt authorize
 module.exports = router;
