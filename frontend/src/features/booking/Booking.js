@@ -11,8 +11,8 @@ const initialState = {
   bookedtime: null,
   status: "pending",
 };
-
-const createurl = "https://covihelp-india.herokuapp.com/api/bookings/createBooking";
+const BASE_URL = process.env.BASE_URL;
+const createurl = `${BASE_URL}/bookings/createBooking`;
 export const createbooking = createAsyncThunk(
   "booking/createbooking",
   async (

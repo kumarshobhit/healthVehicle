@@ -22,7 +22,7 @@ const initialState = {
 // usertype: "Customer"
 // _id: "60a7909eb083ec326c1d84e3"
 
-const BASE_URL = process.env.BASE_URL || "http:localhost:8000/api"
+const BASE_URL = process.env.BASE_URL;
 
 const loginURL = `${BASE_URL}/auth`;
 const registerURL = `${BASE_URL}/users`;

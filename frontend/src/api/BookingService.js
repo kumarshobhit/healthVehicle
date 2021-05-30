@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:8000/api";
+const BASE_URL = process.env.BASE_URL;
 const url = `${BASE_URL}/ambulances/`;
 
 export const getAmbulance = async (id) => {
