@@ -2,7 +2,7 @@
 import axios from "axios";
 import { clustersDbscan, point, distance } from "@turf/turf";
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const api_url = `${BASE_URL}/ambulances`;
 
 class LocationServiceApi {

@@ -4,7 +4,7 @@ import axios from "axios";
 export const TOKEN_SESSION_ATTRIBUTE_NAME = "token";
 export const TOKEN_HEADER_LENGTH = 7;
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const userUrl = `${BASE_URL}/users/`;
 
 class UserServiceApi {

@@ -14,7 +14,7 @@ const initialState = {
   usertype: "",
 };
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const loginURL = `${BASE_URL}/ambulances/login`;
 const registerURL = `${BASE_URL}/ambulances/register`;

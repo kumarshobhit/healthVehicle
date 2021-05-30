@@ -11,7 +11,7 @@ const initialState = {
   bookedtime: null,
   status: "pending",
 };
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const createurl = `${BASE_URL}/bookings/createBooking`;
 export const createbooking = createAsyncThunk(
   "booking/createbooking",
