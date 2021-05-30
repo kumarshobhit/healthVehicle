@@ -15,12 +15,13 @@ const initialState = {
 
 // const createurl =
 //   "https://covihelp-india.herokuapp.com/api/bookings/createBooking";
-const getDriverBookingURL =`${BASE_URL}/bookings/driver/`
+
 //   "https://covihelp-india.herokuapp.com/api/bookings/driver/";
 // const localgetDriverBookingurl = "http://localhost:8000/api/bookings/driver/";
 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+const getDriverBookingURL =`${BASE_URL}/bookings/driver/`
 const createurl = `${BASE_URL}/bookings/createBooking`;
 export const createbooking = createAsyncThunk(
   "booking/createbooking",
