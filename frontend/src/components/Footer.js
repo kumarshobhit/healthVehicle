@@ -3,7 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import GitHubIcon from "@material-ui/icons/GitHub";
 
-const GITHUB_REPO_LINK = "https://github.com/kumarshobhit/Covihelp";
+const GITHUB_REPO_LINK = "https://github.com/ksushant6566/healthVehicle";
 
 const useStyles = makeStyles((theme) => ({
   footer: {

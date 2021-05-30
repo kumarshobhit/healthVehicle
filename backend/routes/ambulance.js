@@ -3,14 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
-const config = require("config");
-const { check, validationResult } = require("express-validator");
-const bookingSelectFields =
-  "_id user car bookedtime pickuptime returntime cost location status";
-const selectFields =
-  "_id make seats bodytype numberplate colour costperhour fueltype location currentbooking image";
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
-const User = require("../models/user");
 const Ambulance = require("../models/ambulance");
 
 // without jwt
@@ -87,7 +81,7 @@ router.post("/register", async (req, res) => {
 
     jwt.sign(
       payload,
-      "secret",
+      JWT_SECRET,
       {
         expiresIn: 360000,
       },
@@ -136,7 +130,7 @@ router.post("/login", async (req, res) => {
 
     jwt.sign(
       payload,
-      "secret",
+      JWT_SECRET,
       {
         expiresIn: 360000,
       },

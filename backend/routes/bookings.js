@@ -5,11 +5,14 @@ const User = require("../models/user");
 const Ambulance = require("../models/ambulance");
 const Booking = require("../models/bookings");
 
+const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME;
+const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'ksushant6566@gmail.com',
-    pass: 'Sushant@6566'
+    user: NODEMAILER_USERNAME,
+    pass: NODEMAILER_PASSWORD
   }
 });
 
