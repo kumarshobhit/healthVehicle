@@ -16,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signup } from "../features/authentication/auth";
 import { Alert } from "@material-ui/lab";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const [errorMessage, setErrorMessage] = useState(null);
   const [formState, setFormState] = useState({
     firstname: "",
@@ -85,6 +88,7 @@ export default function SignUp() {
         password: "",
         usertype: "",
       });
+      history.push("/");
     }
   };
   return (
