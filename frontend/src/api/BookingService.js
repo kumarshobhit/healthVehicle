@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = process.env.BOOKING_URL || "http://localhost:8000/api/ambulances/";
+const BASE_URL = process.env.BASE_URL || "http://localhost:8000/api";
+const url = `${BASE_URL}/ambulances/`;
 
 export const getAmbulance = async (id) => {
   const res = await axios.get(`${url}${id}`);

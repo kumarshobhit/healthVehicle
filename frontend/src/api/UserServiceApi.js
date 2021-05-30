@@ -1,10 +1,12 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 // for user JWT storage
 export const TOKEN_SESSION_ATTRIBUTE_NAME = "token";
 export const TOKEN_HEADER_LENGTH = 7;
-const userUrl = "https://covihelp-india.herokuapp.com/api/users/";
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:8000/api";
+const userUrl = `${BASE_URL}/users/`;
+
 class UserServiceApi {
   getUserToken() {
     let token = localStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME);

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose') ;
-const config=require('config') ;
-const dbUrl= process.env.MONGO_URI || "mongodb+srv://shobhit_contactkeeper:pHigVCvws0912AWp@users.fc8gm.mongodb.net/covidHackathon?retryWrites=true&w=majority";
+// const config=require('config') ;
+require('dotenv').config()
+
+const dbUrl= process.env.MONGO_URI;
 
 const db= async ()  => {
     try{

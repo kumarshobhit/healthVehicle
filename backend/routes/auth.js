@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECTRET = process.env.JWT_SECTRET;
 const auth = require('../middleware/auth');
-const selectFields = '_id firstname lastname email password usertype';
 const { check, validationResult } = require('express-validator');
 
 const User = require("../models/user");
