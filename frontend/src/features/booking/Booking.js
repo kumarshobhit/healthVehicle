@@ -12,11 +12,13 @@ const initialState = {
   status: "pending",
 };
 
+
 // const createurl =
 //   "https://covihelp-india.herokuapp.com/api/bookings/createBooking";
-const getDriverBookingURL =
-  "https://covihelp-india.herokuapp.com/api/bookings/driver/";
-const localgetDriverBookingurl = "http://localhost:8000/api/bookings/driver/";
+const getDriverBookingURL =`${BASE_URL}/bookings/driver/`
+//   "https://covihelp-india.herokuapp.com/api/bookings/driver/";
+// const localgetDriverBookingurl = "http://localhost:8000/api/bookings/driver/";
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const createurl = `${BASE_URL}/bookings/createBooking`;
