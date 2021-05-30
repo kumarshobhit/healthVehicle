@@ -4,14 +4,24 @@ import axios from "axios";
 const initialState = {
   loading: false,
   error: null,
-  user: null,
+  user: {},
   ambulance: {},
   userCoordinates: [],
   ambulanceCoordinates: [],
   bookedtime: null,
   status: "pending",
 };
+
+
+// const createurl =
+//   "https://covihelp-india.herokuapp.com/api/bookings/createBooking";
+
+//   "https://covihelp-india.herokuapp.com/api/bookings/driver/";
+// const localgetDriverBookingurl = "http://localhost:8000/api/bookings/driver/";
+
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+const getDriverBookingURL =`${BASE_URL}/bookings/driver/`
 const createurl = `${BASE_URL}/bookings/createBooking`;
 export const createbooking = createAsyncThunk(
   "booking/createbooking",
@@ -39,6 +49,29 @@ export const createbooking = createAsyncThunk(
   }
 );
 
+export const getDriverBooking = createAsyncThunk(
+  "booking/getBooking",
+  async (id, { rejectWithValue }) => {
+    console.log("reached thunk");
+    try {
+      const res = await axios.get(`${getDriverBookingURL}${id}`);
+      // const res = await axios.get(
+      //   `${localgetDriverBookingurl}60abf2d9ab45d00328e7ce87`
+      // );
+      if (res.data.response === undefined) {
+        return rejectWithValue("Not Found");
+      } else {
+        console.log(res.data.response);
+
+        return res.data.response;
+      }
+    } catch (e) {
+      console.log(e.response.data);
+      return rejectWithValue(e.response.data.msg);
+    }
+  }
+);
+
 export const bookingSlice = createSlice({
   name: "booking",
   initialState,
@@ -48,7 +81,7 @@ export const bookingSlice = createSlice({
       Object.assign(state, {
         loading: false,
         error: null,
-        user: null,
+        user: {},
         ambulance: {},
         userCoordinates: [],
         ambulanceCoordinates: [],
@@ -74,7 +107,45 @@ export const bookingSlice = createSlice({
       Object.assign(state, {
         loading: false,
         error: null,
-        user: null,
+        user: {},
+        ambulance: {},
+        userCoordinates: [],
+        ambulanceCoordinates: [],
+        bookedtime: null,
+        status: "pending",
+      });
+    },
+    [getDriverBooking.pending]: (state, action) => {
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        user: {},
+        ambulance: {},
+        userCoordinates: [],
+        ambulanceCoordinates: [],
+        bookedtime: null,
+        status: "pending",
+      });
+    },
+    [getDriverBooking.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        user: action.payload.booking.user,
+        ambulance: action.payload.booking.ambulance,
+        userCoordinates: action.payload.booking.userCoordinates,
+        ambulanceCoordinates: action.payload.booking.ambulanceCoordinates,
+        bookedtime: action.payload.booking.bookedtime,
+        status: "booked",
+      });
+    },
+    [getDriverBooking.rejected]: (state, action) => {
+      console.log(action.payload);
+      Object.assign(state, {
+        loading: false,
+        error: null,
+        user: {},
         ambulance: {},
         userCoordinates: [],
         ambulanceCoordinates: [],
@@ -91,3 +162,5 @@ export const ambulanceCoordinates = (state) =>
   state.booking.ambulanceCoordinates;
 export const getBookingStatus = (state) => state.booking.status;
 export const getAmbulance = (state) => state.booking.ambulance;
+export const getUser = (state) => state.booking.user;
+export const getBookedtime = (state) => state.booking.bookedtime;

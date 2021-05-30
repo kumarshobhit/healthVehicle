@@ -12,9 +12,15 @@ import DashBoard from "./components/DashBoard";
 import MyBookingPage from "./components/BookingPage";
 import DriverSignup from "./components/DriverSignup";
 import DriverLogin from "./components/DriverLogin";
+import { checkDriver } from "./features/authentication/driverAuth";
+import { useSelector } from "react-redux";
+import DriverProfile from "./components/DriverProfile";
+import DriverDashBoard from "./components/DriverDashBoard";
 
 function App() {
   const isUserStaff = false;
+  const isDriver = useSelector(checkDriver);
+  const isUserDriver = isDriver === "driver" ? true : false;
   return (
     <div className="App">
       <Router>
@@ -27,6 +33,12 @@ function App() {
           <Route path="/driverlogin" component={DriverLogin} />
           {/* <Route path="/locations/:id" component={LocationShowPage} /> */}
           <Route path="/locations" component={SearchableMap} />
+          {isUserDriver === true && (
+            <Route path="/driverprofile" component={DriverProfile} />
+          )}
+          {isUserDriver === true && (
+            <Route path="/driver" component={DriverDashBoard} />
+          )}
           {!isUserStaff && (
             <AuthenticatedRoute path="/myprofile" component={MyProfile} />
           )}

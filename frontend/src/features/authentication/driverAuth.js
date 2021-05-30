@@ -173,8 +173,12 @@ export const driverAuthSlice = createSlice({
 });
 
 export default driverAuthSlice.reducer;
-export const isUserLoggedIn = (state) => state.driverAuth.isLoggedIn;
-export const getName = (state) => state.driverAuth.driversName;
-export const getEmail = (state) => state.driverAuth.email;
+
+export const getDrivercontact = (state) => state.driverAuth.contact;
+export const checkDriverAvailable = (state) => state.driverAuth.available;
+export const getDrivernumberplate = (state) => state.driverAuth.numberplate;
+export const getDriverName = (state) => state.driverAuth.driversName;
+export const getDriverEmail = (state) => state.driverAuth.email;
 export const { logoutUser } = driverAuthSlice.actions;
-export const getUserType = (state) => state.driverAuth.usertype;
+export const checkDriver = (state) => state.driverAuth.usertype;
+export const getDriverId = (state) => state.driverAuth.id;

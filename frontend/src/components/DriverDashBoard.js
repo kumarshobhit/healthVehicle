@@ -9,16 +9,20 @@ import LocationServiceApi from "../api/LocationService";
 import { useLocation } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import { Redirect } from "react-router-dom";
+import { getDriverId } from "../features/authentication/driverAuth";
+import { useSelector } from "react-redux";
+import "mapbox-gl/dist/mapbox-gl.css";
+import mapboxgl from "mapbox-gl";
 import {
+  getDriverBooking,
   getUserCoordinates,
   ambulanceCoordinates,
   getBookingStatus,
   getAmbulance,
+  getUser,
   getBookedtime,
 } from "../features/booking/Booking";
-import { useSelector } from "react-redux";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
+import { useDispatch } from "react-redux";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
@@ -61,15 +65,21 @@ const useStyles = makeStyles({
     marginLeft: "300px",
   },
 });
-function DashBoard() {
+function DriverDashBoard() {
   const mapRef = useRef();
+  const dispatch = useDispatch();
   const classes = useStyles();
-
+  const driverID = useSelector(getDriverId);
   const [showBooking, setShowBooking] = useState(false);
+  //   const intialCoordinates = useState([]);
+  //   const finalCoordinates = useState([]);
+  //   const status = useSelector(getBookingStatus);
   const intialCoordinates = useSelector(getUserCoordinates);
   const finalCoordinates = useSelector(ambulanceCoordinates);
   const status = useSelector(getBookingStatus);
   const ambulance = useSelector(getAmbulance);
+  const user = useSelector(getUser);
+  const bookingTime = useSelector(getBookedtime);
 
   useEffect(() => {
     const initializeMap = () => {
@@ -94,12 +104,16 @@ function DashBoard() {
 
       map.addControl(directions, "top-left");
     };
-    if (status === "booked") {
-      console.log(intialCoordinates);
-      setShowBooking(true, initializeMap());
-    }
-    console.log(status);
-  }, [status]);
+
+    const getBookings = async (id) => {
+      const res = await dispatch(getDriverBooking(id));
+      if (res.type === "booking/getBooking/fulfilled") {
+        setShowBooking(true, initializeMap());
+      }
+    };
+
+    getBookings(driverID);
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -112,16 +126,10 @@ function DashBoard() {
           alignItems="center"
         >
           <Typography className={classes.details} variant="h5" gutterBottom>
-            <strong> Driver Name</strong> :{ambulance.driversName}
+            <strong> Name</strong> :{user.firstname}
           </Typography>
           <Typography className={classes.details} variant="h5" gutterBottom>
-            <strong> Address</strong> :{ambulance.address}
-          </Typography>
-          <Typography className={classes.details} variant="h5" gutterBottom>
-            <strong> Number Plate</strong> :{ambulance.numberplate}
-          </Typography>
-          <Typography className={classes.details} variant="h5" gutterBottom>
-            <strong> Contact</strong> :{ambulance.contact}
+            <strong> Booked Time</strong> :{bookingTime}
           </Typography>
         </Grid>
       ) : (
@@ -132,7 +140,7 @@ function DashBoard() {
             variant="h3"
             gutterBottom
           >
-            <strong> First Place Booking To See Dashboard</strong>
+            <strong> Currently not any Bookings for You.</strong>
           </Typography>
         </Grid>
       )}
@@ -146,4 +154,4 @@ function DashBoard() {
   );
 }
 
-export default DashBoard;
+export default DriverDashBoard;

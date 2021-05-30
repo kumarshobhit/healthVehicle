@@ -93,7 +93,7 @@ export default function DriverSignup() {
         available: false,
         password: "",
       });
-      history.push("/");
+      history.push("/driverprofile");
     }
   };
   return (
