@@ -16,7 +16,7 @@ import { createbooking } from "../features/booking/Booking";
 
 const useStyles = makeStyles({
   root: {
-    height: "100vh",
+    // height: "100vh",
     marginTop: "75px",
     // marginBottom    : "75px",
   },
