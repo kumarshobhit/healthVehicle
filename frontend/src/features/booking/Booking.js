@@ -49,14 +49,17 @@ export const getDriverBooking = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     console.log("reached thunk");
     try {
-      // const res = await axios.get(`${localgetDriverBookingurl}${id}`);
-      const res = await axios.get(
-        `${localgetDriverBookingurl}60abf2d9ab45d00328e7ce87`
-      );
+      const res = await axios.get(`${getDriverBookingURL}${id}`);
+      // const res = await axios.get(
+      //   `${localgetDriverBookingurl}60abf2d9ab45d00328e7ce87`
+      // );
+      if (res.data.response === undefined) {
+        return rejectWithValue("Not Found");
+      } else {
+        console.log(res.data.response);
 
-      console.log(res.data.response);
-
-      return res.data.response;
+        return res.data.response;
+      }
     } catch (e) {
       console.log(e.response.data);
       return rejectWithValue(e.response.data.msg);
