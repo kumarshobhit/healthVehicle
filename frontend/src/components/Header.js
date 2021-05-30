@@ -4,11 +4,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 import UserServiceApi from "../api/UserServiceApi";
 import uuid from "react-uuid";
-import { headersData, LoggedInHeader, staffHeader } from "../util/HeaderItems";
+import {
+  headersData,
+  LoggedInHeader,
+  staffHeader,
+  driverHeader,
+} from "../util/HeaderItems";
 import { logoutUser } from "../features/authentication/auth";
 import { useDispatch } from "react-redux";
 import { isUserLoggedIn, getUserType } from "../features/authentication/auth";
 import { useSelector } from "react-redux";
+import { checkDriver } from "../features/authentication/driverAuth";
 
 const useStyles = makeStyles({
   header: {
@@ -44,7 +50,8 @@ function Header() {
   const dispatch = useDispatch();
   const checkLoggedIn = useSelector(isUserLoggedIn);
   const usertype = useSelector(getUserType);
-  const isUserDriver = true; /////
+  const isDriver = useSelector(checkDriver);
+  const isUserDriver = isDriver === "driver" ? true : false;
   const handleLogout = async () => {
     localStorage.removeItem("token");
     await dispatch(logoutUser());
@@ -58,8 +65,10 @@ function Header() {
       <Toolbar className={classes.toolbar}>
         {covidHelp}
         <div>
-          {!isLoggedIn && getMenuButtons(headersData)}
-          {isLoggedIn && (
+          {!isLoggedIn && !isUserDriver && getMenuButtons(headersData)}
+          {isUserDriver && getMenuButtons(driverHeader)}
+
+          {isLoggedIn && !isUserDriver && (
             <>
               {isUserStaff
                 ? getMenuButtons(staffHeader)

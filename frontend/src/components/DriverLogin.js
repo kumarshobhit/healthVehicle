@@ -67,7 +67,7 @@ export default function DriverLogin() {
         numberplate: "",
         password: "",
       });
-      history.push("/");
+      history.push("/driverprofile");
     } else {
       setErrorMessage(res.payload);
       console.log(res.payload);

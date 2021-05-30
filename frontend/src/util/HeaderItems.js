@@ -60,3 +60,13 @@ export const staffHeader = [
     href: "/",
   },
 ];
+export const driverHeader = [
+  {
+    label: "my profile",
+    href: "/driverprofile",
+  },
+  {
+    label: "Driver Dashboard",
+    href: "/driver",
+  },
+];
