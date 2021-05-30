@@ -8,13 +8,13 @@ const Booking = require("../models/bookings");
 const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME;
 const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: NODEMAILER_USERNAME,
-    pass: NODEMAILER_PASSWORD,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: NODEMAILER_USERNAME,
+//     pass: NODEMAILER_PASSWORD,
+//   },
+// });
 
 router.get("/", (req, res) => {
   Booking.find()
@@ -101,23 +101,23 @@ router.post("/createBooking", async (req, res) => {
         booking: booking,
       };
 
-      const mailOptions = {
-        from: "ksushant6566@gmail.com",
-        to: `${ambulance.email}`,
-        subject: "URGENT: New Booking Request",
-        text: `Dear ${ambulance.name}\n${user.firstName} has requested an ambulance please report.\n Check your dashboard for more details`,
-      };
+      // const mailOptions = {
+      //   from: "ksushant6566@gmail.com",
+      //   to: `${ambulance.email}`,
+      //   subject: "URGENT: New Booking Request",
+      //   text: `Dear ${ambulance.name}\n${user.firstName} has requested an ambulance please report.\n Check your dashboard for more details`,
+      // };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-          res.setHeader("Access-Control-Allow-Origin", "*");
-          res.json("unsuccessfull");
-        } else {
-          console.log("Email sent: " + info.response);
-          res.json("successfull");
-        }
-      });
+      // transporter.sendMail(mailOptions, (error, info) => {
+      //   if (error) {
+      //     console.log(error);
+      //     res.setHeader("Access-Control-Allow-Origin", "*");
+      //     res.json("unsuccessfull");
+      //   } else {
+      //     console.log("Email sent: " + info.response);
+      //     res.json("successfull");
+      //   }
+      // });
 
       res.status(200).json(response);
     });
