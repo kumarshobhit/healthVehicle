@@ -22,8 +22,10 @@ const initialState = {
 // usertype: "Customer"
 // _id: "60a7909eb083ec326c1d84e3"
 
-const loginURL = "https://covihelp-india.herokuapp.com/api/auth";
-const registerURL = "https://covihelp-india.herokuapp.com/api/users";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const loginURL = `${BASE_URL}/auth`;
+const registerURL = `${BASE_URL}/users`;
 
 export const signup = createAsyncThunk(
   "auth/signup",

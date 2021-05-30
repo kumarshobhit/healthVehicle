@@ -14,8 +14,10 @@ const initialState = {
   usertype: "",
 };
 
-const loginURL = "http://localhost:8000/api/ambulances/login";
-const registerURL = "http://localhost:8000/api/ambulances/register";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const loginURL = `${BASE_URL}/ambulances/login`;
+const registerURL = `${BASE_URL}/ambulances/register`;
 
 export const signup = createAsyncThunk(
   "driverAuth/signup",
